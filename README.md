@@ -84,3 +84,8 @@ __device__ inline void calcDiscreteModel(double* X, const double* a, double h) {
 #define CALC_DISCRETE_MODEL(X, a, h) calcDiscreteModel(X, a, h)
 #endif
 ```
+To activate a specific scheme, replace the top-level `#define` directive in `systems.cuh` with the corresponding identifier, e.g.: 
+
+```cpp
+#define USE_SYSTEM_FOR_BASINS
+```
