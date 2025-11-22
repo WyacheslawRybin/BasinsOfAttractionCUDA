@@ -57,3 +57,30 @@ __device__ inline void calcDiscreteModel(double* X, const double* a, double h) {
 #define SIZE_A <number_of_parameters>
 #define CALC_DISCRETE_MODEL(X, a, h) calcDiscreteModel(X, a, h)
 #endif
+```
+- Replace `SYSTEM_NAME` with a **unique identifier** (e.g., `USE_SYSTEM_FOR_BASINS`) for conditional compilation.  
+- The function `calcDiscreteModel` implements one discrete-time evolution step with integration step size `h`.  
+- `SIZE_X` = dimensionality of the phase space (number of state variables).  
+- `SIZE_A` = number of model parameters.
+
+### ✅ Example Implementation
+
+```cpp
+#ifdef USE_SYSTEM_FOR_BASINS
+__device__ inline void calcDiscreteModel(double* X, const double* a, double h) {
+    float h1 = h * a[0];
+    float h2 = h * (1 - a[0]);
+
+    X[0] = X[0] + h1 * (sin(X[1]) - a[1] * X[0]);
+    X[1] = X[1] + h1 * (sin(X[2]) - a[1] * X[1]);
+    X[2] = X[2] + h1 * (sin(X[0]) - a[1] * X[2]);
+
+    X[2] = (X[2] + h2 * sin(X[0])) / (1 + h2 * a[1]);
+    X[1] = (X[1] + h2 * sin(X[2])) / (1 + h2 * a[1]);
+    X[0] = (X[0] + h2 * sin(X[1])) / (1 + h2 * a[1]);
+}
+#define SIZE_X 3
+#define SIZE_A 2
+#define CALC_DISCRETE_MODEL(X, a, h) calcDiscreteModel(X, a, h)
+#endif
+```
