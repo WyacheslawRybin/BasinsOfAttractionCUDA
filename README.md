@@ -17,8 +17,8 @@ CUDA-based basins of attraction calculation
 
 ## 📂 Project Setup and Execution Instructions
 
-1. **Download** the project archive from the provided link:  
-   [https://drive.google.com/file/d/1aSJPi9StPu1C9b7_XVQUlbx3HvKgI2Nd/view](https://drive.google.com/file/d/1aSJPi9StPu1C9b7_XVQUlbx3HvKgI2Nd/view)
+1. **Download** the project  
+  
 
 2. **Extract** the archive contents to a convenient location on your local drive.  
    The primary working directory is named `Basins_of_attractions`.
