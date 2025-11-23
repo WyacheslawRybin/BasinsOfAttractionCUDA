@@ -90,4 +90,54 @@ To change the precision of calculations between float/double, modify this line.
 typedef float numb;
 ```
 
+### Configuring the Computational Kernel (kernel.cu):
 
+1. Specify the output directory at the top of kernel.cu:
+```cpp
+   const std::string BASINS_OUTPUT_PATH = "C:/Users/user/Documents"
+```
+2. In the main() function, invoke the basin construction algorithm using conditional compilation:
+
+```cpp
+#ifdef USE_SYSTEM_FOR_BASINS
+    double params[2]{ 0.5, 0.1665 };
+    double init[3]{ 0, 0, 0 };
+
+    {
+        std::cout << "Start basins" << std::endl;
+        auto start = std::chrono::high_resolution_clock::now();
+
+        Basins::basinsOfAttraction_2(
+            200,                                    // Total simulation time
+            600,                                    // Diagram resolution (pixels per side)
+            0.01,                                   // Integration step size
+            sizeof(init) / sizeof(double),          // Phase space dimensionality
+            init,                                   // Initial conditions
+            new double[4]{ -200, 200, -60, 60 },    // Parameter ranges [x_min, x_max, y_min, y_max]
+            new int[2]{ 0, 1 },                     // Indices of variables varied across the grid
+            1,                                      // Index of the state variable used for attractor classification
+            100000000,                              // Divergence threshold (trajectory considered unstable if |x| exceeds this value)
+            1000,                                   // Transient time (discarded before analysis)
+            params,                                 // System parameters
+            sizeof(params) / sizeof(double),        // Number of parameters
+            1,                                      // Subsampling factor (only every 'preScaller'-th point is processed)
+            0.05,                                   // eps parameter for DBSCAN clustering
+            std::string(BASINS_OUTPUT_PATH) + "/bas_2.csv"
+        );
+
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        std::cout << "Time taken: " << duration << " milliseconds" << std::endl;
+    }
+#endif
+```
+
+**Critical Note**: The identifier used in the #ifdef directive in kernel.cu must exactly match the one activated via #define in systems.cuh.  
+This design ensures modularity and facilitates rapid switching between distinct dynamical models without modifying the core computational logic.
+
+### Program Execution:
+
+After completing the configuration, launch the program by clicking “Local Windows Debugger” or pressing F5.  
+The output will be saved as a CSV file in the specified directory and can be visualized using external tools such as Python (e.g., Matplotlib, Pandas), MATLAB, or Excel.
+
+Note: Correct program operation requires a CUDA-compatible GPU.
