@@ -17,20 +17,16 @@ CUDA-based basins of attraction calculation
 
 ## 📂 Project Setup and Execution Instructions
 
-1. **Download** the project  
+1. **Clone or Download** the project  
   
+2. **Launch Microsoft Visual Studio.**
 
-2. **Extract** the archive contents to a convenient location on your local drive.  
-   The primary working directory is named `Basins_of_attractions`.
+3. From the main menu, select **“Open Project or Solution”**.
 
-3. **Launch Microsoft Visual Studio.**
-
-4. From the main menu, select **“Open Project or Solution”**.
-
-5. Navigate to the `Basins_of_attractions` folder and select the solution file **`Basins_of_attractions.sln`**.  
+4. Navigate to the `Basins_of_attractions` folder and select the solution file **`Basins_of_attractions.sln`**.  
    Upon successful loading, the project structure will appear in the **Solution Explorer**.
 
-6. **CUDA Toolkit Configuration:**  
+5. **CUDA Toolkit Configuration:**  
    - Go to **Project → Build Customizations**  
      → Ensure that the correct version of the installed CUDA Toolkit is selected.  
    - It is recommended to enable full file visibility in the Solution Explorer via **Project → Show All Files**.
@@ -89,3 +85,9 @@ To activate a specific scheme, replace the top-level `#define` directive in `sys
 ```cpp
 #define USE_SYSTEM_FOR_BASINS
 ```
+To change the precision of calculations between float/double, modify this line.
+```cpp
+typedef float numb;
+```
+
+
